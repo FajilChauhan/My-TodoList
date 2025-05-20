@@ -9,16 +9,16 @@ function App() {
   const [todos, settodos] = useState([]);
 
   useEffect(() =>{
-    let todostring = localStorage.getItem("todos");
-    if(todostring){
-      let todos = JSON.parse(todostring);
+    let todoString = localStorage.getItem("todos");
+    if(todoString){
+      let todos = JSON.parse(todoString);
       settodos(todos);
     }
-  }, [])
+  }, []);
 
-  const saveToLS = () => {
-    localStorage.setItem("todods", JSON.stringify(todos))
-  }
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }, [todos]);
 
   const handleedit = (e, id) =>{
     let t = todos.filter(i=>i.id === id) 
@@ -26,8 +26,7 @@ function App() {
     let newTodos = todos.filter(item=>{
       return item.id!==id
     }); 
-    settodos(newTodos) 
-    saveToLS()
+    settodos(newTodos)
   }
 
   const handledelete = (e, id) =>{
@@ -35,13 +34,11 @@ function App() {
       return item.id != id;
     })
     settodos(newTodos);
-    saveToLS();
   }
 
   const handleadd = () =>{
     settodos([...todos, {id: uuidv4(), todo, isCompleted: false}])
     settodo("");
-    saveToLS();
   }
 
   const handleChange = (e) =>{
@@ -54,9 +51,8 @@ function App() {
       return item.id == id;
     })
     let newTodos = [...todos];
-    newTodos[index].iscompleted = !newTodos[index].isCompleted;
+    newTodos[index].isCompleted = !newTodos[index].isCompleted;
     settodos(newTodos);
-    saveToLS();
   }
   
   return (
